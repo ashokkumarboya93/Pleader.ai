@@ -154,9 +154,9 @@ async def signup(user_data: UserCreate):
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    # Hash password (truncate to 72 bytes for bcrypt)
-    password_bytes = user_data.password.encode('utf-8')[:72]
-    hashed_password = pwd_context.hash(password_bytes.decode('utf-8'))
+    # Hash password
+    password_bytes = user_data.password.encode('utf-8')
+    hashed_password = bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode('utf-8')
     
     # Create user
     user = User(
