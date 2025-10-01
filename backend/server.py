@@ -11,7 +11,7 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone, timedelta
 import jwt
-from passlib.context import CryptContext
+import bcrypt
 import google.generativeai as genai
 import json
 import base64
@@ -27,9 +27,6 @@ db = client[os.environ['DB_NAME']]
 
 # Initialize Gemini API
 genai.configure(api_key=os.environ['GEMINI_API_KEY'])
-
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # JWT configuration
 JWT_SECRET = os.environ['JWT_SECRET']
