@@ -394,7 +394,7 @@ async def get_chat_history(user_id: str = Depends(get_current_user)):
 @api_router.get("/chat/{chat_id}")
 async def get_chat(chat_id: str, user_id: str = Depends(get_current_user)):
     """Get specific chat"""
-    chat = await db.chats.find_one({"id": chat_id, "user_id": user_id})
+    chat = await db.chats.find_one({"id": chat_id, "user_id": user_id}, {"_id": 0})
     if not chat:
         raise HTTPException(status_code=404, detail="Chat not found")
     return chat
