@@ -49,12 +49,37 @@ const DocumentAnalysis = () => {
     try {
       const result = await documentApi.analyze(file);
       setAnalysis(result.analysis);
+      setDocumentId(result.id);
       toast.success('Document analyzed successfully');
     } catch (error) {
-      toast.error('Error analyzing document');
+      const errorMessage = error.response?.data?.detail || 'Error analyzing document';
+      toast.error(errorMessage);
       console.error('Analysis error:', error);
     } finally {
       setAnalyzing(false);
+    }
+  };
+
+  const handleExportAnalysis = async (format) => {
+    if (!documentId) {
+      toast.error('No analysis to export');
+      return;
+    }
+
+    try {
+      const blob = await documentApi.exportAnalysis(documentId, format);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `analysis_${documentId}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast.success(`Analysis exported as ${format.toUpperCase()}`);
+    } catch (error) {
+      toast.error('Error exporting analysis');
+      console.error('Export error:', error);
     }
   };
 
