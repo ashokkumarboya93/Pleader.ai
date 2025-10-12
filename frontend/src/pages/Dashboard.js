@@ -108,6 +108,29 @@ const Dashboard = () => {
     toast.success('Copied to clipboard');
   };
 
+  const handleExportChat = async (format) => {
+    if (!currentChat?.id) {
+      toast.error('No chat to export');
+      return;
+    }
+
+    try {
+      const blob = await chatApi.exportChat(currentChat.id, format);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `chat_${currentChat.id}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast.success(`Chat exported as ${format.toUpperCase()}`);
+    } catch (error) {
+      toast.error('Error exporting chat');
+      console.error('Export error:', error);
+    }
+  };
+
   const handleLogout = async () => {
     await logout();
     navigate('/login');
