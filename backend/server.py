@@ -447,17 +447,32 @@ async def analyze_document(
         # Analyze with Gemini
         model = genai.GenerativeModel('gemini-2.5-pro')
         
-        prompt = f"""Analyze this legal document and provide a comprehensive analysis:
-
-1. **Key Points**: Identify main clauses, provisions, and important sections
-2. **Risk Assessment**: Identify any legal risks or concerns (categorize each as low/medium/high severity)
-3. **Suggestions**: Provide recommendations for improvement, clarification, or missing elements
-4. **Legal References**: Cite relevant Indian laws, sections, acts, or precedents that apply
+        prompt = f"""Analyze this legal document strictly within the Indian legal framework:
 
 Document text:
 {text[:8000]}
 
-Provide a detailed, structured analysis. Be specific and professional."""
+Provide a comprehensive analysis with these sections:
+
+1. **Key Points**: Identify main clauses, provisions, and important sections. Reference specific clause numbers or paragraph references.
+
+2. **Risk Assessment**: Identify legal risks or concerns under Indian law. For each risk:
+   - Categorize severity: LOW/MEDIUM/HIGH
+   - Reference applicable Indian Acts, IPC sections, or constitutional articles
+   - Explain potential legal consequences under Indian jurisdiction
+
+3. **Suggestions**: Provide recommendations for improvement:
+   - Missing clauses required under Indian law
+   - Ambiguous terms needing clarification
+   - Compliance with Indian Contract Act, Consumer Protection Act, or other relevant legislation
+
+4. **Legal References**: Cite specific Indian legal provisions:
+   - Relevant sections from Indian Acts (e.g., Indian Contract Act 1872, IPC, CPC)
+   - Articles from the Indian Constitution if applicable
+   - Relevant Supreme Court or High Court precedents
+   - Mandatory compliance requirements under Indian law
+
+Format with clear headings, bullet points, and bold key terms. Be specific and professional, focusing exclusively on Indian legal framework."""
         
         response = model.generate_content(prompt)
         analysis_text = response.text
