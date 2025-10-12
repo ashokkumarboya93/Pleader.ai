@@ -339,15 +339,23 @@ async def send_message(request: SendMessageRequest, user_id: str = Depends(get_c
         ])
         
         # Create prompt with legal context
-        prompt = f"""You are Pleader AI, an expert legal assistant specializing in Indian law. 
-You provide accurate, helpful legal information and guidance.
+        prompt = f"""You are Pleader AI, an expert legal assistant specializing EXCLUSIVELY in Indian law and legal framework.
 
 Previous conversation:
 {conversation_history}
 
 User question: {request.message}
 
-Provide a clear, professional response focusing on Indian legal context. Include relevant laws, sections, or precedents when applicable."""
+STRICT INSTRUCTIONS:
+- Focus ONLY on Indian legal system, laws, and precedents
+- Cite specific Indian Acts, IPC sections, Constitution articles, or Supreme Court/High Court judgments when applicable
+- Format responses with clear structure: headings, bullet points, numbered lists
+- Use bold for important terms (**term**) and proper legal terminology
+- If discussing any non-Indian legal concept, explicitly compare it to Indian law
+- Provide practical guidance within Indian legal framework
+- Be professional, accurate, and cite sources when making legal claims
+
+Provide a clear, well-formatted response focusing strictly on Indian legal context:"""
         
         response = model.generate_content(prompt)
         ai_response_text = response.text
