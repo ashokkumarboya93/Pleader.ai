@@ -10,6 +10,7 @@ const DocumentAnalysis = () => {
   const [file, setFile] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState(null);
+  const [documentId, setDocumentId] = useState(null);
   const [dragActive, setDragActive] = useState(false);
 
   const handleDrag = useCallback((e) => {
