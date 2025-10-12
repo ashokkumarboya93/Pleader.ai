@@ -111,87 +111,108 @@ user_problem_statement: |
 backend:
   - task: "Authentication endpoints (signup, login, logout, session)"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Fixed bcrypt password verification bug in login endpoint. Changed from undefined pwd_context.verify() to bcrypt.checkpw()"
+      - working: true
+        agent: "testing"
+        comment: "✅ All authentication endpoints working correctly. Tested signup, login, logout, and /auth/me. JWT token generation and validation working properly."
   
   - task: "RAG pipeline with FAISS and Gemini embeddings"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/rag_utils.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented complete RAG pipeline with document chunking, FAISS indexing, Gemini embeddings (embedding-001), retrieval, and re-ranking using Gemini 1.5 Flash"
+      - working: true
+        agent: "testing"
+        comment: "✅ RAG pipeline working correctly. Fixed deprecated Gemini model names (gemini-1.5-* → gemini-2.5-*). RAG query and stats endpoints returning proper responses with document retrieval and grounded answers."
   
   - task: "Document extraction utilities (PDF, DOCX, TXT, JPG, PNG)"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/document_utils.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented text extraction using pypdf for PDF, python-docx for DOCX, Pillow + pytesseract for image OCR (JPG/PNG)"
+      - working: true
+        agent: "testing"
+        comment: "✅ Document extraction working correctly. Tested with TXT file, text extraction successful and document analysis generated comprehensive legal analysis."
   
   - task: "Document analysis endpoint with RAG indexing"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Updated /api/documents/analyze to use proper text extraction and automatically index documents in RAG pipeline"
+      - working: true
+        agent: "testing"
+        comment: "✅ Document analysis endpoint working correctly. Successfully analyzed test lease agreement, extracted text, generated legal analysis, and indexed document for RAG queries."
   
   - task: "RAG query endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added /api/rag/query endpoint for document-grounded responses with re-ranking"
+      - working: true
+        agent: "testing"
+        comment: "✅ RAG query endpoint working correctly. Successfully queried uploaded document, returned relevant sources and grounded answers with proper scoring."
   
   - task: "Export functionality (PDF, DOCX, TXT)"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/export_utils.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented export utilities using reportlab for PDF, python-docx for DOCX, and plain text. Added endpoints /api/chat/{id}/export/{format} and /api/documents/{id}/export/{format}"
+      - working: true
+        agent: "testing"
+        comment: "✅ Export functionality working correctly. All export formats (PDF, DOCX, TXT) working for both chat conversations and document analysis. Proper content-type headers and file downloads."
   
   - task: "Chat endpoints (send, history, get, delete)"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Existing chat endpoints preserved, already implemented with Gemini 1.5 Pro"
+      - working: true
+        agent: "testing"
+        comment: "✅ Chat endpoints working correctly. Fixed MongoDB ObjectId serialization issue by excluding _id fields. Chat send, history, and get endpoints all working properly with Gemini 2.5 Pro."
 
 frontend:
   - task: "Dashboard page with chat interface"
