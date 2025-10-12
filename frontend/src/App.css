@@ -149,3 +149,123 @@ select:focus {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(74, 222, 128, 0.15);
 }
+
+/* ChatGPT-style message formatting */
+.message-content {
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.message-content h1,
+.message-content h2,
+.message-content h3 {
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #1F2937;
+}
+
+.message-content h1 { font-size: 1.75rem; }
+.message-content h2 { font-size: 1.5rem; }
+.message-content h3 { font-size: 1.25rem; }
+
+.message-content ul,
+.message-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.message-content li {
+  margin-bottom: 0.5rem;
+}
+
+.message-content p {
+  margin-bottom: 1rem;
+}
+
+.message-content strong {
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.message-content code {
+  background-color: #F3F4F6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: #EF4444;
+}
+
+.message-content pre {
+  background-color: #1F2937;
+  color: #F9FAFB;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.message-content pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.message-content blockquote {
+  border-left: 4px solid #4ADE80;
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #6B7280;
+}
+
+.message-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.message-content th,
+.message-content td {
+  border: 1px solid #E5E7EB;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.message-content th {
+  background-color: #F3F4F6;
+  font-weight: 600;
+}
+
+.message-content a {
+  color: #4ADE80;
+  text-decoration: underline;
+}
+
+.message-content a:hover {
+  color: #22C55E;
+}
+
+/* Responsive max-width for messages */
+@media (max-width: 768px) {
+  .message-content {
+    font-size: 15px;
+  }
+}
+
+/* Group hover for message actions */
+.message-wrapper {
+  position: relative;
+}
+
+.message-actions {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.message-wrapper:hover .message-actions {
+  opacity: 1;
+}
