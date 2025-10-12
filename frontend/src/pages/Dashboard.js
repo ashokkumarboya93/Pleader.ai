@@ -407,7 +407,7 @@ const Dashboard = () => {
                         )}
                       </div>
                       {message.sender === 'ai' && (
-                        <div className="flex items-center space-x-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center space-x-2 mt-2 message-actions">
                           <button
                             onClick={() => handleCopyMessage(message.content)}
                             className="p-1.5 hover:bg-gray-100 rounded-md transition-colors"
