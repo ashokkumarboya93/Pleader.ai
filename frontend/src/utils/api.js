@@ -65,6 +65,29 @@ export const documentApi = {
   deleteDocument: async (documentId) => {
     const response = await axios.delete(`${API}/documents/${documentId}`);
     return response.data;
+  },
+  
+  exportAnalysis: async (documentId, format) => {
+    const response = await axios.get(`${API}/documents/${documentId}/export/${format}`, {
+      responseType: 'blob'
+    });
+    return response.data;
+  }
+};
+
+export const ragApi = {
+  query: async (query, topK = 3, useRerank = true) => {
+    const response = await axios.post(`${API}/rag/query`, {
+      query,
+      top_k: topK,
+      use_rerank: useRerank
+    });
+    return response.data;
+  },
+  
+  getStats: async () => {
+    const response = await axios.get(`${API}/rag/stats`);
+    return response.data;
   }
 };
 
