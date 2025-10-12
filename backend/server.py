@@ -388,7 +388,7 @@ Provide a clear, professional response focusing on Indian legal context. Include
 @api_router.get("/chat/history")
 async def get_chat_history(user_id: str = Depends(get_current_user)):
     """Get all chats for user"""
-    chats = await db.chats.find({"user_id": user_id}).sort("updated_at", -1).to_list(100)
+    chats = await db.chats.find({"user_id": user_id}, {"_id": 0}).sort("updated_at", -1).to_list(100)
     return chats
 
 @api_router.get("/chat/{chat_id}")
