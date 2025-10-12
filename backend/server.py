@@ -505,7 +505,7 @@ Provide a detailed, structured analysis. Be specific and professional."""
 @api_router.get("/documents")
 async def get_documents(user_id: str = Depends(get_current_user)):
     """Get user's documents"""
-    documents = await db.documents.find({"user_id": user_id}).sort("uploaded_at", -1).to_list(50)
+    documents = await db.documents.find({"user_id": user_id}, {"_id": 0}).sort("uploaded_at", -1).to_list(50)
     return documents
 
 @api_router.delete("/documents/{document_id}")
