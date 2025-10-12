@@ -329,7 +329,7 @@ async def send_message(request: SendMessageRequest, user_id: str = Depends(get_c
         )
         
         # Generate AI response using Gemini
-        model = genai.GenerativeModel('gemini-1.5-pro')
+        model = genai.GenerativeModel('gemini-2.5-pro')
         
         # Build conversation history for context
         messages = chat.get("messages", []) if isinstance(chat, dict) else chat.messages
