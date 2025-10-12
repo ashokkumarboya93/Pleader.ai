@@ -210,7 +210,7 @@ class RAGPipeline:
         
         try:
             # Use Gemini to score relevance
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel('gemini-2.5-flash')
             
             scored_results = []
             for result in results:
