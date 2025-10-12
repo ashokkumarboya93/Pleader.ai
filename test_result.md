@@ -271,10 +271,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Authentication endpoints (signup, login, logout)"
-    - "Document analysis with text extraction"
-    - "RAG query endpoint"
-    - "Export functionality (chat and analysis)"
+    - "Frontend testing (if required by user)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
