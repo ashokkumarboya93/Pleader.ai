@@ -288,13 +288,34 @@ const DocumentAnalysis = () => {
                     </div>
                   )}
 
-                  {/* Export Button */}
-                  <Button
-                    className="w-full bg-green-500 hover:bg-green-600 text-white"
-                    data-testid="export-analysis-button"
-                  >
-                    Export Analysis Report
-                  </Button>
+                  {/* Export Buttons */}
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => handleExportAnalysis('pdf')}
+                      className="w-full bg-green-500 hover:bg-green-600 text-white"
+                      data-testid="export-analysis-pdf"
+                    >
+                      Export as PDF
+                    </Button>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        onClick={() => handleExportAnalysis('docx')}
+                        variant="outline"
+                        className="border-green-500 text-green-600 hover:bg-green-50"
+                        data-testid="export-analysis-docx"
+                      >
+                        Export as DOCX
+                      </Button>
+                      <Button
+                        onClick={() => handleExportAnalysis('txt')}
+                        variant="outline"
+                        className="border-green-500 text-green-600 hover:bg-green-50"
+                        data-testid="export-analysis-txt"
+                      >
+                        Export as TXT
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
