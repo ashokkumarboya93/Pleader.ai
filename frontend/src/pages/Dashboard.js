@@ -256,10 +256,37 @@ const Dashboard = () => {
             </h1>
           </div>
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm" className="text-gray-600">
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </Button>
+            {currentChat && messages.length > 0 && (
+              <div className="relative group">
+                <Button variant="ghost" size="sm" className="text-gray-600" data-testid="export-button">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </Button>
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+                  <button
+                    onClick={() => handleExportChat('pdf')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg"
+                    data-testid="export-pdf"
+                  >
+                    Export as PDF
+                  </button>
+                  <button
+                    onClick={() => handleExportChat('docx')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    data-testid="export-docx"
+                  >
+                    Export as DOCX
+                  </button>
+                  <button
+                    onClick={() => handleExportChat('txt')}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg"
+                    data-testid="export-txt"
+                  >
+                    Export as TXT
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
