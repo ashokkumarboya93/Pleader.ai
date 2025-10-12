@@ -342,7 +342,7 @@ const Dashboard = () => {
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
+                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in message-wrapper`}
                   data-testid={`message-${index}`}
                 >
                   <div className={`flex space-x-3 max-w-3xl ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
