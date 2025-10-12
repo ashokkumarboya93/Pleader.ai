@@ -101,5 +101,6 @@ export const userApi = {
 export default {
   chatApi,
   documentApi,
+  ragApi,
   userApi
 };
