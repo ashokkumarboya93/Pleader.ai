@@ -190,8 +190,10 @@ async def login(credentials: UserLogin):
     if not user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
-    # Verify password
-    if not pwd_context.verify(credentials.password, user.get("password", "")):
+    # Verify password using bcrypt
+    password_bytes = credentials.password.encode('utf-8')
+    stored_password = user.get("password", "").encode('utf-8')
+    if not bcrypt.checkpw(password_bytes, stored_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
     # Create token
