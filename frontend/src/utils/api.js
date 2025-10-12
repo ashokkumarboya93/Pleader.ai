@@ -34,6 +34,13 @@ export const chatApi = {
   deleteChat: async (chatId) => {
     const response = await axios.delete(`${API}/chat/${chatId}`);
     return response.data;
+  },
+  
+  exportChat: async (chatId, format) => {
+    const response = await axios.get(`${API}/chat/${chatId}/export/${format}`, {
+      responseType: 'blob'
+    });
+    return response.data;
   }
 };
 
