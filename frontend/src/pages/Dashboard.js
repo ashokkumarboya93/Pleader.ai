@@ -359,24 +359,67 @@ const Dashboard = () => {
                     </Avatar>
                     <div className={`flex-1 ${message.sender === 'user' ? 'text-right' : ''}`}>
                       <div
-                        className={`inline-block p-4 rounded-2xl ${
+                        className={`inline-block p-4 rounded-2xl max-w-[720px] ${
                           message.sender === 'user'
                             ? 'bg-green-500 text-white'
-                            : 'bg-white border border-gray-200'
+                            : 'bg-white border border-gray-200 shadow-sm'
                         }`}
+                        style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
                       >
-                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                        <div 
+                          className={`text-base leading-relaxed whitespace-pre-wrap ${
+                            message.sender === 'user' ? 'text-white' : 'text-gray-900'
+                          }`}
+                          style={{ fontSize: '16px', lineHeight: '1.6' }}
+                        >
+                          {message.content.split('\n').map((line, i) => {
+                            // Format headings
+                            if (line.startsWith('### ')) {
+                              return <h3 key={i} className="text-lg font-bold mt-4 mb-2">{line.replace('### ', '')}</h3>;
+                            }
+                            if (line.startsWith('## ')) {
+                              return <h2 key={i} className="text-xl font-bold mt-4 mb-2">{line.replace('## ', '')}</h2>;
+                            }
+                            if (line.startsWith('# ')) {
+                              return <h1 key={i} className="text-2xl font-bold mt-4 mb-2">{line.replace('# ', '')}</h1>;
+                            }
+                            // Format lists
+                            if (line.match(/^\d+\.\s/)) {
+                              return <li key={i} className="ml-4 mb-1">{line.replace(/^\d+\.\s/, '')}</li>;
+                            }
+                            if (line.startsWith('- ') || line.startsWith('* ')) {
+                              return <li key={i} className="ml-4 mb-1 list-disc">{line.replace(/^[-*]\s/, '')}</li>;
+                            }
+                            // Format bold text
+                            const boldFormatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                            // Regular paragraph
+                            return line.trim() ? (
+                              <p key={i} className="mb-2" dangerouslySetInnerHTML={{ __html: boldFormatted }} />
+                            ) : (
+                              <br key={i} />
+                            );
+                          })}
+                        </div>
+                        {message.timestamp && (
+                          <p className="text-xs opacity-60 mt-2">
+                            {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        )}
                       </div>
                       {message.sender === 'ai' && (
-                        <div className="flex items-center space-x-2 mt-2">
+                        <div className="flex items-center space-x-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={() => handleCopyMessage(message.content)}
-                            className="p-1 hover:bg-gray-100 rounded"
+                            className="p-1.5 hover:bg-gray-100 rounded-md transition-colors"
                             data-testid={`copy-message-${index}`}
+                            title="Copy"
                           >
                             <Copy className="w-4 h-4 text-gray-500" />
                           </button>
-                          <button className="p-1 hover:bg-gray-100 rounded">
+                          <button 
+                            className="p-1.5 hover:bg-gray-100 rounded-md transition-colors"
+                            title="Save"
+                          >
                             <Bookmark className="w-4 h-4 text-gray-500" />
                           </button>
                         </div>
