@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, Response, UploadFile, File, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -16,6 +17,14 @@ import google.generativeai as genai
 import json
 import base64
 import io
+
+# Import our utility modules
+from rag_utils import get_rag_pipeline
+from document_utils import extract_text_from_file, validate_file_type
+from export_utils import (
+    export_chat_to_pdf, export_chat_to_docx, export_chat_to_txt,
+    export_analysis_to_pdf, export_analysis_to_docx, export_analysis_to_txt
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
