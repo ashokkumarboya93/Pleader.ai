@@ -149,13 +149,13 @@ const DocumentAnalysis = () => {
                   Drag and drop your file here, or click to browse
                 </p>
                 <p className="text-sm text-gray-500 mb-4">
-                  Supported formats: PDF, DOC, DOCX, TXT
+                  Supported formats: PDF, DOCX, TXT, JPG, PNG
                 </p>
                 <input
                   type="file"
                   id="file-upload"
                   className="hidden"
-                  accept=".pdf,.doc,.docx,.txt"
+                  accept=".pdf,.docx,.txt,.jpg,.jpeg,.png"
                   onChange={handleFileChange}
                   data-testid="file-input"
                 />
