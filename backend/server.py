@@ -516,6 +516,135 @@ async def delete_document(document_id: str, user_id: str = Depends(get_current_u
         raise HTTPException(status_code=404, detail="Document not found")
     return {"message": "Document deleted successfully"}
 
+# ==================== RAG ENDPOINTS ====================
+
+class RAGQuery(BaseModel):
+    query: str
+    top_k: int = 3
+    use_rerank: bool = True
+
+@api_router.post("/rag/query")
+async def rag_query(request: RAGQuery, user_id: str = Depends(get_current_user)):
+    """Query the RAG pipeline for document-grounded responses"""
+    try:
+        rag = get_rag_pipeline()
+        
+        # Perform RAG query
+        results, answer = rag.query(
+            query=request.query,
+            top_k=request.top_k,
+            use_rerank=request.use_rerank
+        )
+        
+        # Format sources
+        sources = [
+            {
+                "filename": doc['metadata'].get('filename', 'Unknown'),
+                "text": doc['text'][:200] + "..." if len(doc['text']) > 200 else doc['text'],
+                "score": doc.get('rerank_score', doc.get('score', 0))
+            }
+            for doc in results
+        ]
+        
+        return {
+            "answer": answer,
+            "sources": sources,
+            "num_sources": len(sources)
+        }
+    
+    except Exception as e:
+        logger.error(f"RAG query error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")
+
+@api_router.get("/rag/stats")
+async def rag_stats(user_id: str = Depends(get_current_user)):
+    """Get RAG index statistics"""
+    try:
+        rag = get_rag_pipeline()
+        stats = rag.get_stats()
+        return stats
+    except Exception as e:
+        logger.error(f"RAG stats error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting stats: {str(e)}")
+
+# ==================== EXPORT ENDPOINTS ====================
+
+@api_router.get("/chat/{chat_id}/export/{format}")
+async def export_chat(chat_id: str, format: str, user_id: str = Depends(get_current_user)):
+    """Export chat in PDF, DOCX, or TXT format"""
+    try:
+        # Get chat
+        chat = await db.chats.find_one({"id": chat_id, "user_id": user_id})
+        if not chat:
+            raise HTTPException(status_code=404, detail="Chat not found")
+        
+        # Export based on format
+        if format.lower() == 'pdf':
+            content = export_chat_to_pdf(chat)
+            media_type = "application/pdf"
+            filename = f"chat_{chat_id}.pdf"
+        elif format.lower() == 'docx':
+            content = export_chat_to_docx(chat)
+            media_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            filename = f"chat_{chat_id}.docx"
+        elif format.lower() == 'txt':
+            content = export_chat_to_txt(chat)
+            media_type = "text/plain"
+            filename = f"chat_{chat_id}.txt"
+        else:
+            raise HTTPException(status_code=400, detail="Invalid format. Use: pdf, docx, or txt")
+        
+        # Return file
+        return StreamingResponse(
+            io.BytesIO(content if isinstance(content, bytes) else content.encode('utf-8')),
+            media_type=media_type,
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Export chat error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error exporting chat: {str(e)}")
+
+@api_router.get("/documents/{document_id}/export/{format}")
+async def export_document_analysis(document_id: str, format: str, user_id: str = Depends(get_current_user)):
+    """Export document analysis in PDF, DOCX, or TXT format"""
+    try:
+        # Get document
+        doc = await db.documents.find_one({"id": document_id, "user_id": user_id})
+        if not doc:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # Export based on format
+        if format.lower() == 'pdf':
+            content = export_analysis_to_pdf(doc)
+            media_type = "application/pdf"
+            filename = f"analysis_{document_id}.pdf"
+        elif format.lower() == 'docx':
+            content = export_analysis_to_docx(doc)
+            media_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            filename = f"analysis_{document_id}.docx"
+        elif format.lower() == 'txt':
+            content = export_analysis_to_txt(doc)
+            media_type = "text/plain"
+            filename = f"analysis_{document_id}.txt"
+        else:
+            raise HTTPException(status_code=400, detail="Invalid format. Use: pdf, docx, or txt")
+        
+        # Return file
+        return StreamingResponse(
+            io.BytesIO(content if isinstance(content, bytes) else content.encode('utf-8')),
+            media_type=media_type,
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Export analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error exporting analysis: {str(e)}")
+
 # ==================== USER SETTINGS ====================
 
 @api_router.put("/user/preferences")
