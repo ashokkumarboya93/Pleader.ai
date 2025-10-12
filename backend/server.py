@@ -437,7 +437,7 @@ async def analyze_document(
             )
         
         # Analyze with Gemini
-        model = genai.GenerativeModel('gemini-1.5-pro')
+        model = genai.GenerativeModel('gemini-2.5-pro')
         
         prompt = f"""Analyze this legal document and provide a comprehensive analysis:
 
