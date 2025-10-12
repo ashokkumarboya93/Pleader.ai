@@ -276,7 +276,7 @@ Relevance score (0-10):"""
         ])
         
         try:
-            model = genai.GenerativeModel('gemini-1.5-pro')
+            model = genai.GenerativeModel('gemini-2.5-pro')
             prompt = f"""You are Pleader AI, an expert legal assistant. Answer the question based on the provided context from legal documents.
 
 Context from documents:
