@@ -282,3 +282,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Completed Phase 1-5 implementation. Backend has been updated with: (1) Fixed bcrypt auth bug (2) Full RAG pipeline with FAISS + Gemini embeddings (3) Document extraction for PDF/DOCX/TXT/JPG/PNG (4) Export utilities for PDF/DOCX/TXT (5) New endpoints for RAG query and exports. Frontend updated with export UI for both chat and document analysis. Ready for backend testing."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE - All 7 backend tasks are now working correctly! Fixed 2 critical issues: (1) Updated deprecated Gemini model names from 1.5-* to 2.5-* series (2) Fixed MongoDB ObjectId serialization by excluding _id fields from API responses. All authentication, document analysis, RAG, chat, and export functionality tested and verified working. Backend is production-ready."
